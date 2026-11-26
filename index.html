@@ -12,7 +12,7 @@
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f2ded3;color:var(--brown);font-family:Georgia,'Times New Roman',serif}
 #app{position:relative;width:min(100vw,520px);height:100dvh;margin:auto;overflow-x:hidden;overflow-y:auto;background:#f8e8df;box-shadow:0 0 28px #6e493022;scroll-snap-type:y mandatory;scroll-behavior:smooth;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y}
 .screen{position:relative;inset:auto;display:block;flex:none;width:100%;height:100dvh;min-height:100dvh;overflow:hidden;scroll-snap-align:start;scroll-snap-stop:always}
-.art{position:absolute;inset:0;width:100%;height:100%;object-contain:contain;user-select:none;pointer-events:none}
+.art{position:absolute;inset:0;width:100%;height:100%b;object-fit:contain;user-select:none;pointer-events:none}
 .hotspot{position:absolute;z-index:5;left:8%;right:8%;bottom:8%;height:12%;border:0;background:transparent}
 .maplink{position:absolute;z-index:5;left:17%;right:17%;top:78%;height:9%;border-radius:30px}
 .program-panel{position:absolute;z-index:3;left:36%;right:7%;top:29%;height:48%;background:linear-gradient(110deg,rgba(250,236,226,.97),rgba(255,246,238,.94));border-radius:14px;padding:5% 3%;display:flex;flex-direction:column;justify-content:space-around;box-shadow:0 2px 8px #8b5a3520}
@@ -47,31 +47,42 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f2ded3;col
 </main>
 <script>
 'use strict';
+
+const app = document.getElementById('app');
+const screens = Array.from(app.querySelectorAll('.screen'));
+let index = 0;
+
+function cardHeight() {
   return app.clientHeight;
 }
 
-function updateIndex(){
-  const h=cardHeight();
-  if(!h)return;
-  index=Math.max(0,Math.min(screens.length-1,Math.round(app.scrollTop/h)));
+function updateIndex() {
+  const h = cardHeight();
+  if (!h) return;
+
+  index = Math.max(
+    0,
+    Math.min(screens.length - 1, Math.round(app.scrollTop / h))
+  );
 }
 
-function go(n){
-  index=Math.max(0,Math.min(screens.length-1,n));
+function go(n) {
+  index = Math.max(0, Math.min(screens.length - 1, n));
+
   app.scrollTo({
-    top:index*cardHeight(),
-    behavior:'smooth'
+    top: index * cardHeight(),
+    behavior: 'smooth'
   });
 }
 
-app.addEventListener('scroll',updateIndex,{passive:true});
+app.addEventListener('scroll', updateIndex, { passive: true });
 
-window.addEventListener('resize',()=>{
-  app.scrollTop=index*cardHeight();
+window.addEventListener('resize', () => {
+  app.scrollTop = index * cardHeight();
 });
 
-requestAnimationFrame(()=>{
-  app.scrollTop=0;
+requestAnimationFrame(() => {
+  app.scrollTop = 0;
   updateIndex();
 });
 const weddingDate=new Date('2027-07-23T16:00:00+05:00');
